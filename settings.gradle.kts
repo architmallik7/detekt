@@ -5,6 +5,19 @@ pluginManagement {
     includeBuild("detekt-gradle-plugin")
 }
 
+// import the plugin
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("io.harness:gradle-cache:0.0.2")
+    }
+}
+
+// apply the plugin
+apply(plugin = "io.harness.gradle-cache")
+
 include("code-coverage-report")
 include("detekt-api")
 include("detekt-cli")
@@ -71,6 +84,21 @@ buildCache {
         isEnabled = true
         val accessKey = System.getenv("DEVELOCITY_ACCESS_KEY")
         isPush = isCiBuild && !accessKey.isNullOrEmpty()
+    }
+}
+
+// build cache config
+buildCache {
+    local {
+        // Local build cache is dangerous as it might produce inconsistent results
+        // in case developer modifies files while the build is running
+        isEnabled = false
+    }
+    remote(io.harness.Cache::class.java) {
+        accountId = System.getenv("HARNESS_ACCOUNT_ID") // accountId should be populated in CI pipeline
+        token = System.getenv("HARNESS_PAT")            // API token with account admin (or edit) permissions
+        isPush = true
+        endpoint = System.getenv("HARNESS_CACHE_SERVICE_ENDPOINT") // https://app.harness.io/gateway/cache-service
     }
 }
 
