@@ -185,3 +185,5 @@ Custom rules and reports from 3rd parties can be found on our [**Detekt Marketpl
 
 - [JetBrains](https://github.com/jetbrains/) - Creating IntelliJ + Kotlin
 - [PMD](https://github.com/pmd/pmd) & [Checkstyle](https://github.com/checkstyle/checkstyle) & [ktlint](https://github.com/pinterest/ktlint) - Ideas for threshold values and style rules
+
+Testing
